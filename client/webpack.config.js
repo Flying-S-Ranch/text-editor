@@ -23,6 +23,30 @@ module.exports = () => {
     plugins: [
       new WorkboxPlugin.GenerateSW(),
       new MiniCssExtractPlugin(),
+      new WebpackPwaManifest({
+        name: 'TODOs',
+        short_name: 'TODOs',
+        description: 'Keep track of important tasks!',
+        background_color: '#7eb4e2',
+        theme_color: '#7eb4e2',
+        start_url: './',
+        publicPath: './',
+        icons: [
+          {
+            src: path.resolve('./src/images/logo.png'),
+            sizes: [96, 128, 192, 256, 384, 512],
+            destination: path.join('assets', 'icons'),
+          },
+        ],
+      }),
+      new HtmlWebpackPlugin({
+        template: './index.html',
+        title: 'TODOs List'
+      }),
+      // new InjectManifest({
+      //   swSrc: './src-sw.js',
+      //   swDest: 'service-worker.js',
+      // }),
     ],
 
     module: {
@@ -30,6 +54,10 @@ module.exports = () => {
         {
           test: /\.css$/i,
           use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        },
+        {
+          test: /\.(png|svg|jpg|jpeg|gif)$/i,
+          type: 'asset/resource',
         },
         {
           test: /\.m?js$/,
